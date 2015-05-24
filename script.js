@@ -30,30 +30,36 @@ click_on_english = function(row) {
   return delay(1000, row)
 }
 
-enter_at1_score = function(row) {
-  columns = row.split(',')
-  at1_mark = columns[2]
+mark_inserter = function(column, label, timeout) {
+  return function(row) {
+    columns = row.split(',')
+    mark = columns[column]
 
-  //  - find label AT1
-  at1_label = $('.itemCode:contains("AT1")')
-  //  - find the parent class non comment item
-  at1_parent = at1_label.parents('.nonCommentItem')
-  //  - find input
-  at1_input = at1_parent.find('input')
+    //  - find label AT1
+    label = $('.itemCode:contains("'+label+'")')
+    //  - find the parent class non comment item
+    parent = label.parents('.nonCommentItem')
+    //  - find input
+    input = parent.find('input')
 
-  //  - Enter essay score into AT1 field
-  char_code = at1_mark.charCodeAt(0);
+    //  - Enter essay score into AT1 field
+    char_code = mark.charCodeAt(0);
 
-  at1_input
-    .trigger ({ type: 'keypress', keyCode: char_code, which: char_code, charCode: char_code })
-    .val(at1_mark[0])
-    .blur()
+    input
+      .val(mark[0])
+      .trigger ({ type: 'keypress', keyCode: char_code, which: char_code, charCode: char_code })
+      .blur()
 
-  return delay(4000, row)
+    return delay(timeout, row)
+  }
 }
 
+enter_at1_score = mark_inserter(2, 'AT1', 1000)
+enter_at3_score = mark_inserter(4, 'AT3', 4000)
+
+
 function next_student(i) {
-  function() {
+  return function() {
     if (--i) {
       process_loop(i)
     } else {
@@ -74,8 +80,8 @@ function process_loop(i) {
   click_student_name(student)
     .then(click_on_english)
     .then(enter_at1_score)
+    .then(enter_at3_score)
     .then(next_student(i));
 }
 
 process_loop(student_rows.length)
-
