@@ -74,6 +74,57 @@ mark_inserter = function(column, name, timeout) {
   }
 }
 
+wordbank_inserter = function(column, name, timeout) {
+  return function(row) {
+    var columns = row.split(',')
+    var word_keys = columns[column].split('.')
+
+    var words = wordbank_map(word_keys)
+  }
+}
+
+wordbank_map = function(word_keys) {
+  bank = {
+    '1': "",
+    '2': "",
+    '3': "",
+    '4': "",
+    '5': "",
+    '6': "",
+    '7': "",
+    '8': "",
+    '9': "",
+    '10': "",
+    '11': "",
+    '12': "",
+    '13': "",
+    '14': "."
+  }
+
+  return word_keys.map(function(word_key){
+    return bank[word_key]
+  })
+}
+
+wordbank_shoulds_map = function(word_keys) {
+  shoulds_for = {
+    '1':  '',
+    '2':  '',
+    '3':  '',
+    '4':  '',
+    '5':  '',
+    '6':  '',
+    '7':  '',
+    '8':  '',
+    '9':  '',
+    '10': '',
+    '11': '',
+    '12': '',
+    '13': '',
+    '14': ''
+  }
+}
+
 // ,,AT1,AT2,AT2-Code,AT3,,AVENGREA_1,AVENGSPL_1,AVENGWRI_1,AVWKHA1,AVWKHB1,AVWKHC1
 at1_score       = mark_inserter(2, 'AT1', 100)
 at2_score       = mark_inserter(4, 'AT2', 100)
@@ -83,7 +134,9 @@ speaking_score  = mark_inserter(8, 'AVENGSPL_1', 100)
 writing_score   = mark_inserter(9, 'AVENGWRI_1', 100)
 effort_score    = mark_inserter(10, 'AVWKHA1', 100)
 behaviour_score = mark_inserter(11, 'AVWKHB1', 100)
-attitude_score  = mark_inserter(12, 'AVWKHC1', 4000)
+attitude_score  = mark_inserter(12, 'AVWKHC1', 100)
+comment_can     = wordbank_inserter(13, 'AVACH1', 100)
+comment_should  = wordbank_inserter(14, 'ACAFI1', 4000)
 
 function next_student(i) {
   return function() {
@@ -117,6 +170,8 @@ function process_loop(i) {
     .then(effort_score)
     .then(behaviour_score)
     .then(attitude_score)
+    .then(comment_can)
+    .then(comment_should)
     .then(next_student(i));
 }
 
