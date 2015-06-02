@@ -1,12 +1,11 @@
 //Get report data
 
-// ,,AT1,AT2,AT2-Code,AT3,,AVENGREA_1,AVENGSPL_1,AVENGWRI_1,AVWKHA1,AVWKHB1,AVWKHC1
+// ,,AT1,AT2,AT2-Code,AT3,AT4,AVENGREA_1,AVENGSPL_1,AVENGWRI_1,AVWKHA1,AVWKHB1,AVWKHC1,AVACH1,AVAFI1
 student_rows = [
   'derping',
   'herping',
   'okiedokie'
 ]
-
 
 check_student_names = function(student_rows) {
   student_rows.map(function(row) {
@@ -108,27 +107,28 @@ wordbank_map = function(word_keys) {
 
 wordbank_shoulds_map = function(word_keys) {
   shoulds_for = {
-    '1':  '',
-    '2':  '',
-    '3':  '',
-    '4':  '',
-    '5':  '',
-    '6':  '',
-    '7':  '',
-    '8':  '',
-    '9':  '',
-    '10': '',
-    '11': '',
-    '12': '',
+    '1':  '7',
+    '2':  '9',
+    '3':  '6',
+    '4':  '5',
+    '5':  '10',
+    '6':  '11',
+    '7':  '11',
+    '8':  '14',
+    '9':  '13',
+    '10': '13',
+    '11': '13',
+    '12': '13',
     '13': '',
     '14': ''
   }
 }
 
-// ,,AT1,AT2,AT2-Code,AT3,,AVENGREA_1,AVENGSPL_1,AVENGWRI_1,AVWKHA1,AVWKHB1,AVWKHC1
+// ,,AT1,AT2,AT2-Code,AT3,AT4,AVENGREA_1,AVENGSPL_1,AVENGWRI_1,AVWKHA1,AVWKHB1,AVWKHC1,AVACH1,AVAFI1
 at1_score       = mark_inserter(2, 'AT1', 100)
 at2_score       = mark_inserter(4, 'AT2', 100)
 at3_score       = mark_inserter(5, 'AT3', 100)
+exam            = mark_inserter(6, 'AT4', 100)
 reading_score   = mark_inserter(7, 'AVENGREA_1', 100)
 speaking_score  = mark_inserter(8, 'AVENGSPL_1', 100)
 writing_score   = mark_inserter(9, 'AVENGWRI_1', 100)
@@ -136,7 +136,7 @@ effort_score    = mark_inserter(10, 'AVWKHA1', 100)
 behaviour_score = mark_inserter(11, 'AVWKHB1', 100)
 attitude_score  = mark_inserter(12, 'AVWKHC1', 100)
 comment_can     = wordbank_inserter(13, 'AVACH1', 100)
-comment_should  = wordbank_inserter(14, 'ACAFI1', 4000)
+comment_should  = wordbank_inserter(14, 'AVAFI1', 4000)
 
 function next_student(i) {
   return function() {
@@ -164,6 +164,7 @@ function process_loop(i) {
     .then(at1_score)
     .then(at2_score)
     .then(at3_score)
+    .then(exam)
     .then(reading_score)
     .then(speaking_score)
     .then(writing_score)
