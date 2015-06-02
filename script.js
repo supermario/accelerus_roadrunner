@@ -78,7 +78,52 @@ wordbank_inserter = function(column, name, timeout) {
     var columns = row.split(',')
     var word_keys = columns[column].split('.')
 
-    var words = wordbank_map(word_keys)
+    var words = wordbank_map(word_keys).join(" ")
+
+    //  - find label
+    var label = $('.commentResults .itemCode:contains("'+name+'")')
+    //  - find the parent class non comment item
+    var parent = label.parents('.commentItem')
+    //  - find input
+    var input = parent.find('textarea')
+
+    //  - Enter essay score into field
+    var char_code = words.charCodeAt(0);
+
+    input
+      .val(words)
+      .trigger ({ type: 'keypress', keyCode: char_code, which: char_code, charCode: char_code })
+      .blur()
+
+    return delay(timeout, row)
+  }
+}
+
+wordbank_inserter_should = function(column, name, timeout) {
+  return function(row) {
+    var columns = row.split(',')
+    var word_keys = columns[column].split('.')
+
+    var mapped_shoulds = $.unique(wordbank_shoulds_map(word_keys))
+
+    var words = wordbank_map(mapped_shoulds).join(" ")
+
+    //  - find label
+    var label = $('.commentResults .itemCode:contains("'+name+'")')
+    //  - find the parent class non comment item
+    var parent = label.parents('.commentItem')
+    //  - find input
+    var input = parent.find('textarea')
+
+    //  - Enter essay score into field
+    var char_code = words.charCodeAt(0);
+
+    input
+      .val(words)
+      .trigger ({ type: 'keypress', keyCode: char_code, which: char_code, charCode: char_code })
+      .blur()
+
+    return delay(timeout, row)
   }
 }
 
@@ -122,6 +167,10 @@ wordbank_shoulds_map = function(word_keys) {
     '13': '',
     '14': ''
   }
+
+  return word_keys.map(function(word_key){
+    return shoulds_for[word_key]
+  })
 }
 
 // ,,AT1,AT2,AT2-Code,AT3,AT4,AVENGREA_1,AVENGSPL_1,AVENGWRI_1,AVWKHA1,AVWKHB1,AVWKHC1,AVACH1,AVAFI1
@@ -136,7 +185,7 @@ effort_score    = mark_inserter(10, 'AVWKHA1', 100)
 behaviour_score = mark_inserter(11, 'AVWKHB1', 100)
 attitude_score  = mark_inserter(12, 'AVWKHC1', 100)
 comment_can     = wordbank_inserter(13, 'AVACH1', 100)
-comment_should  = wordbank_inserter(14, 'AVAFI1', 4000)
+comment_should  = wordbank_inserter_should(13, 'AVAFI1', 4000)
 
 function next_student(i) {
   return function() {
