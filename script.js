@@ -78,7 +78,7 @@ wordbank_inserter = function(column, name, timeout) {
     var columns = row.split(',')
     var word_keys = columns[column].split('.')
 
-    var words = wordbank_map(word_keys).join(" ")
+    var words = wordbank_map(word_keys).join("\n")
 
     //  - find label
     var label = $('.commentResults .itemCode:contains("'+name+'")')
@@ -106,7 +106,7 @@ wordbank_inserter_should = function(column, name, timeout) {
 
     var mapped_shoulds = $.unique(wordbank_shoulds_map(word_keys))
 
-    var words = wordbank_map(mapped_shoulds).join(" ")
+    var words = wordbank_map(mapped_shoulds).join("\n")
 
     //  - find label
     var label = $('.commentResults .itemCode:contains("'+name+'")')
